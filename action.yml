@@ -1,0 +1,59 @@
+name: "Deploy to moonbase"
+description: "Package this repository and deploy it to a moonbase mission with an API key."
+author: "moonbase"
+branding:
+  icon: "upload-cloud"
+  color: "purple"
+
+inputs:
+  api-key:
+    description: "A moonbase API key (starts with mb_live_). Pass it from a repository secret, for example secrets.MOONBASE_API_KEY."
+    required: true
+  mission-id:
+    description: "The id of an existing mission to ship a new version to. Give this or name, not both."
+    required: false
+    default: ""
+  name:
+    description: "The address of a NEW mission to create. Use it for a first deploy only, then switch to mission-id."
+    required: false
+    default: ""
+  display-name:
+    description: "A display name for the new mission. Only with name."
+    required: false
+    default: ""
+  working-directory:
+    description: "The folder to deploy, relative to the repository root. Its package.json or index.html must be at its top."
+    required: false
+    default: "."
+  allow-build-output:
+    description: "Set to true to ship a committed static build folder (dist/, build/, out/). Build caches, secrets and node_modules stay blocked."
+    required: false
+    default: "false"
+
+outputs:
+  url:
+    description: "The live address of the mission."
+    value: ${{ steps.deploy.outputs.url }}
+  project-id:
+    description: "The mission id. Use it as mission-id for the next deploy."
+    value: ${{ steps.deploy.outputs.project-id }}
+  outcome:
+    description: "live, not-ready, assets-not-loading, failed or unknown."
+    value: ${{ steps.deploy.outputs.outcome }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy to moonbase
+      id: deploy
+      shell: bash
+      # Inputs reach the script through the environment only. They are never
+      # written into the script text, so a value cannot change what runs.
+      env:
+        INPUT_API_KEY: ${{ inputs.api-key }}
+        INPUT_MISSION_ID: ${{ inputs.mission-id }}
+        INPUT_NAME: ${{ inputs.name }}
+        INPUT_DISPLAY_NAME: ${{ inputs.display-name }}
+        INPUT_WORKING_DIRECTORY: ${{ inputs.working-directory }}
+        INPUT_ALLOW_BUILD_OUTPUT: ${{ inputs.allow-build-output }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/deploy.sh"

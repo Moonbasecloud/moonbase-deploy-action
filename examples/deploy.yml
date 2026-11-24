@@ -1,0 +1,39 @@
+# Copy this file to .github/workflows/deploy.yml in your repository.
+#
+# Before the first run, add two repository secrets
+# (Settings -> Secrets and variables -> Actions -> New repository secret):
+#   MOONBASE_API_KEY     an API key from API Keys in moonbase (starts with mb_live_)
+#   MOONBASE_MISSION_ID  the id in the mission's link: https://app.moonbase.cloud/missions/<id>
+name: Deploy to moonbase
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# moonbase runs one build at a time per mission, so let a running deploy
+# finish before the next one starts.
+concurrency:
+  group: moonbase-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to moonbase
+        id: moonbase
+        uses: Moonbasecloud/moonbase-deploy-action@v1
+        with:
+          api-key: ${{ secrets.MOONBASE_API_KEY }}
+          mission-id: ${{ secrets.MOONBASE_MISSION_ID }}
+
+      - name: Show the live address
+        env:
+          LIVE_URL: ${{ steps.moonbase.outputs.url }}
+        run: echo "Live at $LIVE_URL"

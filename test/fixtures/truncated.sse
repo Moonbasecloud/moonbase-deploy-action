@@ -1,0 +1,3 @@
+event: stage
+data: {"stage":"payload.upload","status":"started"}
+

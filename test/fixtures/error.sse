@@ -1,0 +1,3 @@
+event: error
+data: {"code":"missing_dependency","message":"raw","trace_id":"TRK-TEST1","stage":"build","friendly":{"title":"A package is missing","explanation":"x","nextSteps":["y"],"code":"missing_dependency","category":"user_build_error"}}
+

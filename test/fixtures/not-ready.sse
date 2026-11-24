@@ -1,0 +1,3 @@
+event: done
+data: {"url":"https://my-app.moonbase.host","project_id":"proj_abc123","slug":"my-app","mode":"dynamic","app_ready":false,"readiness":{"state":"not_ready","path":"/readyz","http_status":503}}
+

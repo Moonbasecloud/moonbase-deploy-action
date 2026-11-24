@@ -1,0 +1,6 @@
+event: stage
+data: {"stage":"payload.upload","status":"started"}
+
+event: done
+data: {"url":"https://my-app.moonbase.host","project_id":"proj_abc123","slug":"my-app","total_ms":4200,"mode":"static","framework":"static","app_ready":null}
+
