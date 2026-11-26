@@ -29,11 +29,15 @@ jobs:
 
       # shellcheck is installed on GitHub's Ubuntu runners. Errors and warnings
       # fail the job; style notes do not.
+      # SC2319 is excluded on purpose: scripts/package-mission.sh reads $? right
+      # after a [[ =~ ]] test to tell "no match" (1) from "bad regex" (2). That
+      # file is a byte-identical copy of the moonbase Skill's script (see the
+      # drift check below), so it is not edited here.
       - name: shellcheck
         if: ${{ !cancelled() }}
         run: |
           shellcheck --version
-          shellcheck --severity=warning scripts/*.sh test/*.sh
+          shellcheck --severity=warning --exclude=SC2319 scripts/*.sh test/*.sh
 
       # actionlint at a pinned release, fetched with its official download script.
       - name: actionlint
