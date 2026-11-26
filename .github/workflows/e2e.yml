@@ -1,0 +1,71 @@
+name: E2E deploy
+
+# One real deploy of the public example moonbase-examples/express-guestbook to
+# the mission gh-example-express-guestbook, using the action at this ref.
+# Run by hand only: it ships a real version and needs the repository secrets
+# MOONBASE_API_KEY and MOONBASE_MISSION_ID.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: moonbase-e2e
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    name: Deploy express-guestbook and check it is live
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      # The action itself, at this ref, so `uses: ./` runs the code under test.
+      - name: Check out the action
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # The example app, in its own folder. It is a separate git checkout, so
+      # the packager ships only the files tracked by moonbase-examples.
+      - name: Check out moonbase-examples
+        uses: actions/checkout@v4
+        with:
+          repository: Moonbasecloud/moonbase-examples
+          path: moonbase-examples
+          persist-credentials: false
+
+      - name: Deploy to moonbase
+        id: moonbase
+        uses: ./
+        with:
+          api-key: ${{ secrets.MOONBASE_API_KEY }}
+          mission-id: ${{ secrets.MOONBASE_MISSION_ID }}
+          working-directory: moonbase-examples/express-guestbook
+
+      # Both addresses must answer 200. No redirect is followed: a 3xx fails.
+      - name: Check the live address and /readyz
+        env:
+          LIVE_URL: ${{ steps.moonbase.outputs.url }}
+          READYZ_URL: https://gh-example-express-guestbook.moonbase.host/readyz
+        run: |
+          set -euo pipefail
+          if [ -z "$LIVE_URL" ]; then
+            echo "::error::The action returned no live address."
+            exit 1
+          fi
+          check() {
+            local target="$1" code="000" attempt
+            for attempt in 1 2 3; do
+              code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 "$target" || true)"
+              [ "$code" = "200" ] && break
+              echo "Attempt $attempt: $target answered $code"
+              sleep 10
+            done
+            echo "$target -> $code"
+            [ "$code" = "200" ] || { echo "::error::$target answered $code, expected 200."; return 1; }
+          }
+          rc=0
+          check "$LIVE_URL" || rc=1
+          check "$READYZ_URL" || rc=1
+          exit "$rc"
