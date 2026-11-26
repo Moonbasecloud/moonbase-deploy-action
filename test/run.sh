@@ -57,7 +57,7 @@ has   "$work/live.out" "::add-mask::$KEY" "live: key is masked"
 if [ "$(grep -cF -- "$KEY" "$work/live.out")" -eq 1 ]; then ok "live: key appears only in the mask command"; else bad "live: key appears only in the mask command"; fi
 hasnt "$work/live.curl.argv" "$KEY" "live: key is not in curl's arguments"
 has   "$work/live.curl.stdin" "Authorization: Bearer $KEY" "live: key goes to curl on stdin"
-has   "$work/live.curl.argv" "https://app.moonbase.cloud/api/projects/upload/stream" "live: documented endpoint"
+has   "$work/live.curl.argv" "https://upload.moonbase.cloud/api/projects/upload/stream" "live: documented endpoint"
 has   "$work/live.curl.argv" "redeployProjectId=proj_abc123" "live: redeployProjectId field"
 has   "$work/live.curl.argv" "User-Agent: moonbase-deploy-action/1.0" "live: User-Agent sent"
 if ls "$proj"/mission-*.zip >/dev/null 2>&1; then bad "live: archive removed afterwards"; else ok "live: archive removed afterwards"; fi

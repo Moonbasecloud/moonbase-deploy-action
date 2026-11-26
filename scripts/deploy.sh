@@ -4,7 +4,9 @@
 # result with the shipped parser.
 #
 # It uses one documented call and nothing else:
-#   POST https://app.moonbase.cloud/api/projects/upload/stream
+#   POST https://upload.moonbase.cloud/api/projects/upload/stream
+#   (the upload host from the API reference: app.moonbase.cloud sits behind a
+#   proxy whose request size cap is below the larger plans' deploy sizes)
 #   form fields: file, redeployProjectId | name (+ displayName)
 #   Authorization: Bearer <key>, sent to curl on stdin, never in argv.
 #
@@ -14,7 +16,7 @@
 set -euo pipefail
 set +x
 
-readonly DEPLOY_URL="https://app.moonbase.cloud/api/projects/upload/stream"
+readonly DEPLOY_URL="https://upload.moonbase.cloud/api/projects/upload/stream"
 readonly USER_AGENT="moonbase-deploy-action/1.0"
 # The API reference says to allow at least 10 minutes for a stream.
 readonly MAX_SECONDS=1200
