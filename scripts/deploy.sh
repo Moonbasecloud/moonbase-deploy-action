@@ -46,12 +46,12 @@ if [[ ! "$api_key" =~ ^mb_live_[A-Za-z0-9_.-]+$ ]]; then
   fail "api-key does not look like a moonbase API key. A key starts with mb_live_ and has no spaces."
 fi
 
-# --- 2. The target: an existing mission, or the address of a new one.
+# --- 2. The target: an existing project, or the address of a new one.
 if [ -n "$mission_id" ] && [ -n "$name" ]; then
-  fail "Give mission-id (ship a new version) or name (create a new mission), not both."
+  fail "Give mission-id (ship a new version) or name (create a new project), not both."
 fi
 if [ -z "$mission_id" ] && [ -z "$name" ]; then
-  fail "mission-id is empty. Find the id in the mission's link (https://app.moonbase.cloud/missions/<id>) and pass it, or pass name to create a new mission."
+  fail "mission-id is empty. Find the project id in the project's link (https://app.moonbase.cloud/missions/<id>) and pass it, or pass name to create a new project."
 fi
 if [ -n "$mission_id" ] && [[ ! "$mission_id" =~ ^[A-Za-z0-9_-]{1,128}$ ]]; then
   fail "mission-id may hold only letters, digits, '-' and '_'."
@@ -60,7 +60,7 @@ if [ -n "$name" ] && [[ ! "$name" =~ ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$ ]]; th
   fail "name may hold only lowercase letters, digits and '-', and must start and end with a letter or digit."
 fi
 if [ -n "$display_name" ]; then
-  [ -n "$name" ] || fail "display-name applies to a new mission only. Use it together with name."
+  [ -n "$name" ] || fail "display-name applies to a new project only. Use it together with name."
   if [[ "$display_name" =~ [[:cntrl:]] ]] || [ "${#display_name}" -gt 100 ]; then
     fail "display-name must be one line of at most 100 characters."
   fi
@@ -143,9 +143,9 @@ set_output "outcome" "$outcome"
 
 case "$rc" in
   0) echo "Deployed and live." ;;
-  3) printf '::error::%s\n' "Deployed, but the app reports it is not ready. Do not run the upload again: check the mission, finish its configuration, and re-run only after a change." ;;
+  3) printf '::error::%s\n' "Deployed, but the app reports it is not ready. Do not run the upload again: check the project, finish its configuration, and re-run only after a change." ;;
   4) printf '::error::%s\n' "Deployed, but the page's files do not load. Waiting will not fix this: change the project and push again." ;;
-  2) printf '::error::%s\n' "The outcome is unknown. Check the mission's status before running the deploy again, so a deploy that landed is not uploaded twice." ;;
+  2) printf '::error::%s\n' "The outcome is unknown. Check the project's status before running the deploy again, so a deploy that landed is not uploaded twice." ;;
   *) printf '::error::%s\n' "The deploy failed. See the message above." ;;
 esac
 exit "$rc"

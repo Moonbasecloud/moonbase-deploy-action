@@ -3,7 +3,7 @@
 # Before the first run, add two repository secrets
 # (Settings -> Secrets and variables -> Actions -> New repository secret):
 #   MOONBASE_API_KEY     an API key from API Keys in moonbase (starts with mb_live_)
-#   MOONBASE_MISSION_ID  the id in the mission's link: https://app.moonbase.cloud/missions/<id>
+#   MOONBASE_MISSION_ID  the id in the project's link: https://app.moonbase.cloud/missions/<id>
 name: Deploy to moonbase
 
 on:
@@ -13,7 +13,7 @@ on:
 permissions:
   contents: read
 
-# moonbase runs one build at a time per mission, so let a running deploy
+# moonbase runs one build at a time per project, so let a running deploy
 # finish before the next one starts.
 concurrency:
   group: moonbase-deploy

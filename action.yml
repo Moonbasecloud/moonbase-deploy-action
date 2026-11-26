@@ -1,5 +1,5 @@
 name: "Deploy to moonbase"
-description: "Package this repository and deploy it to a moonbase mission with an API key."
+description: "Package this repository and deploy it to a moonbase project with an API key."
 author: "moonbase"
 branding:
   icon: "upload-cloud"
@@ -10,15 +10,15 @@ inputs:
     description: "A moonbase API key (starts with mb_live_). Pass it from a repository secret, for example secrets.MOONBASE_API_KEY."
     required: true
   mission-id:
-    description: "The id of an existing mission to ship a new version to. Give this or name, not both."
+    description: "The id of an existing project to ship a new version to. Give this or name, not both."
     required: false
     default: ""
   name:
-    description: "The address of a NEW mission to create. Use it for a first deploy only, then switch to mission-id."
+    description: "The address of a NEW project to create. Use it for a first deploy only, then switch to mission-id."
     required: false
     default: ""
   display-name:
-    description: "A display name for the new mission. Only with name."
+    description: "A display name for the new project. Only with name."
     required: false
     default: ""
   working-directory:
@@ -32,10 +32,10 @@ inputs:
 
 outputs:
   url:
-    description: "The live address of the mission."
+    description: "The live address of the project."
     value: ${{ steps.deploy.outputs.url }}
   project-id:
-    description: "The mission id. Use it as mission-id for the next deploy."
+    description: "The project id. Use it as mission-id for the next deploy."
     value: ${{ steps.deploy.outputs.project-id }}
   outcome:
     description: "live, not-ready, assets-not-loading, failed or unknown."
