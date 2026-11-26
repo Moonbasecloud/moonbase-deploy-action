@@ -1,7 +1,7 @@
 name: E2E deploy
 
 # One real deploy of the public example moonbase-examples/express-guestbook to
-# the mission gh-example-express-guestbook, using the action at this ref.
+# the project gh-example-express-guestbook, using the action at this ref.
 # Run by hand only: it ships a real version and needs the repository secrets
 # MOONBASE_API_KEY and MOONBASE_MISSION_ID.
 on:
