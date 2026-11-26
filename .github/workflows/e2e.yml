@@ -22,14 +22,14 @@ jobs:
     steps:
       # The action itself, at this ref, so `uses: ./` runs the code under test.
       - name: Check out the action
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       # The example app, in its own folder. It is a separate git checkout, so
       # the packager ships only the files tracked by moonbase-examples.
       - name: Check out moonbase-examples
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: Moonbasecloud/moonbase-examples
           path: moonbase-examples
