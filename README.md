@@ -13,7 +13,7 @@ It uses the documented moonbase deploy API with your own API key, kept as a repo
 
 ## Quick start
 
-1. **Create an API key.** In moonbase, open **API Keys** and create a key. It starts with `mb_live_`.
+1. **Create an API key with the deploy scope.** In moonbase, open **API Keys** in the sidebar and create a new key with deploy scope. It starts with `mb_live_`.
 2. **Save it as a secret.** In your GitHub repository: **Settings → Secrets and variables → Actions → New repository secret**. Name `MOONBASE_API_KEY`, value the key.
 3. **Find the project id.** It is in the project's link: `https://app.moonbase.cloud/missions/<id>`. Save it as the secret `MOONBASE_MISSION_ID`.
 4. **Add the workflow.** Create `.github/workflows/deploy.yml`:
