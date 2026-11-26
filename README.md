@@ -151,7 +151,7 @@ A Linux or macOS runner with `bash`, `curl`, `jq`, `zip`, `unzip` and `git`. `ub
 
 ## How it works
 
-One documented call: a multipart `POST` to `https://app.moonbase.cloud/api/projects/upload/stream` with the form fields `file` and `redeployProjectId` (or `name` and `displayName`), an `Authorization: Bearer` header and a `User-Agent`. The response is a stream of events that ends with `done` or `error`.
+One documented call: a multipart `POST` to `https://upload.moonbase.cloud/api/projects/upload/stream` with the form fields `file` and `redeployProjectId` (or `name` and `displayName`), an `Authorization: Bearer` header and a `User-Agent`. It goes to `upload.moonbase.cloud`, the upload host named in the API reference, so ZIPs up to your plan's per-deploy size are accepted. The response is a stream of events that ends with `done` or `error`.
 
 Packaging and result reading are done by the two helper scripts moonbase ships with its skill, copied here unchanged: [`scripts/package-mission.sh`](scripts/package-mission.sh) and [`scripts/parse-deploy-result.sh`](scripts/parse-deploy-result.sh).
 
