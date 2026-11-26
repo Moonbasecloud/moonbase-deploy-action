@@ -10,7 +10,6 @@ This is a GitHub Action that packages your repository and deploys it to a moonba
 
 It uses the documented moonbase deploy API with your own API key, kept as a repository secret.
 
-> **v1 is coming.** The first release, `v1`, is not published yet. Until it is, `Moonbasecloud/moonbase-deploy-action@v1` in the examples below does not resolve, and a workflow that uses it fails at the start.
 
 ## Quick start
 
