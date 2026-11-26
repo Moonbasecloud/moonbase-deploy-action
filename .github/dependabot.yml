@@ -1,0 +1,10 @@
+version: 2
+updates:
+  # The action's own workflows. It has no npm manifest (shell scripts only).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions-minor-patch:
+        update-types: [minor, patch]
