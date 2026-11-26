@@ -10,6 +10,8 @@ This is a GitHub Action that packages your repository and deploys it to a moonba
 
 It uses the documented moonbase deploy API with your own API key, kept as a repository secret.
 
+> **v1 is coming.** The first release, `v1`, is not published yet. Until it is, `Moonbasecloud/moonbase-deploy-action@v1` in the examples below does not resolve, and a workflow that uses it fails at the start.
+
 ## Quick start
 
 1. **Create an API key.** In moonbase, open **API Keys** and create a key. It starts with `mb_live_`.
@@ -160,10 +162,15 @@ Packaging and result reading are done by the two helper scripts moonbase ships w
 ## Develop
 
 ```bash
-bash test/run.sh
+bash test/run.sh                 # the action's tests
+bash test/check-skill-drift.sh   # the helper scripts still match the Skill
 ```
 
 The tests use recorded responses and a stand-in for `curl`. They need no network and no real key.
+
+The drift check downloads the Skill's two helper scripts from the public repository [`Moonbasecloud/moonbase-skill`](https://github.com/Moonbasecloud/moonbase-skill), at the commit pinned in [`test/check-skill-drift.sh`](test/check-skill-drift.sh) (folder `moonbase/scripts/`), and fails if either differs from the copy in `scripts/`. To take a newer Skill release, copy its two scripts into `scripts/`, move the pin to that release's commit, and run the check.
+
+CI runs the tests, `shellcheck`, `actionlint` and the drift check on every push to `main` and on every pull request: [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
 ## License
 
